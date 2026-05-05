@@ -1,0 +1,25 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-Dg6iWjZj.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/fonts/Lineal-Black.woff2": {
+    "file": "assets/Lineal-Black-Ct806RSG.woff2",
+    "src": "resources/fonts/Lineal-Black.woff2"
+  },
+  "resources/fonts/Lineal-Regular.woff2": {
+    "file": "assets/Lineal-Regular-CAz_3Btv.woff2",
+    "src": "resources/fonts/Lineal-Regular.woff2"
+  },
+  "resources/fonts/Velvelyne-Regular.woff2": {
+    "file": "assets/Velvelyne-Regular-Dq8mY42z.woff2",
+    "src": "resources/fonts/Velvelyne-Regular.woff2"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DZm7oR1s.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
