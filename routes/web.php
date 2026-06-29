@@ -7,5 +7,5 @@ Route::get('/', function () {
 });
 
 Route::get('/blobs/{blob}', function (Blob $blob) {
-    return view('layouts.blobs', ['data' => $blob->body, 'head' => $blob->head, 'name' => $blob->name]);
+    return view('layouts.blobs', ['js' => $blob->body, 'css' => $blob->head, 'name' => $blob->name]);
 })->where('id', '[0-9]+');

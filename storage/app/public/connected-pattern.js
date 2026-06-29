@@ -176,17 +176,10 @@ const height = 1000
         return sorted;
     }
 const div = document.body.appendChild(document.createElement('div'));
-    const onLoad = ()=> {
-        div.classList = ['cellurarize'];
-        div.style.width = "1000px";
-        div.style.height = "1000px";
-    }
+
 const svg = SVG().viewbox(0, 0, width, height).addTo(div).fill("#000000").stroke({width:5, color:"#000000"});
-        generate(svg);
 
 
-    function generate(svg) {
-        
         const numPoints = 512;
 
         const focus = {
@@ -207,20 +200,19 @@ const svg = SVG().viewbox(0, 0, width, height).addTo(div).fill("#000000").stroke
             points,
             relaxIterations: 2
         });
-
         
-        // svg.rect(width, height).fill("rgba(215, 242, 220, 0.6)");
-
-        let allTraced = [];
-        voronoi.cells.forEach((cell) => {
-            if (random(0, 3, true) == 2) {
-                allTraced.push(cell);
-            }
+        let allTraced = voronoi.cells.filter((cell) => {
+            return random(0, 1) > 0.7 && cell.centroid[0] > 150 && cell.centroid[0] < width-150 && cell.centroid[1] > 150 && cell.centroid[1] < height-150;
         });
+
+        trace();
+
+    function trace() {
+        
             var neighbour = [];
             var near = [];
             var previous =0;
-let curves = ['M', width/2, height/2,'Q'];
+
         for (let n=0; n< allTraced.length ;n++) {
             const thisone = allTraced[n];
             neighbour = [];
@@ -234,40 +226,35 @@ let curves = ['M', width/2, height/2,'Q'];
                     }
                 }
             });
+
+
             
-svg.line(thisone.centroid[0], thisone.centroid[1], neighbour[0], neighbour[1]).fill("none");
-            let stringPath = [];
-            let i = 0;
+svg.line(thisone.centroid[0], thisone.centroid[1], neighbour[0], neighbour[1]).fill("none").stroke({width:4, color:colors[0]});
 
-            thisone.points.forEach((point) => {
-                let centertopoint = [point[0] - thisone.centroid[0], point[1] - thisone.centroid[1]];
-                let angle = Math.atan(centertopoint[1] / centertopoint[0]) + Math.PI/2;
-                let control = [Math.cos(angle) * Math.sqrt(dist2(point, thisone.centroid)) /6, Math.sin(angle) * Math.sqrt(dist2(point, thisone.centroid)) /6];
-                if (i==0) {
-                    stringPath.push(['M', point[0], point[1], 'Q']);
-                }
-                if(i >0) {
-                    stringPath.push([point[0], point[1]]);
-                }
-                if (i == thisone.points.length -1) {
-                    stringPath.push([thisone.points[0][0], thisone.points[0][1]]);
-                }
-                i++;
-            });
-            svg.path(stringPath).scale(0.6);
-            }
 
-    }
+            }    allTraced.forEach((thisone) =>{
+        let color = random(colors);
+thisone.points.forEach((point) => {
+                svg.circle(thisone.r).cx(point[0]).cy(point[1]).fill(color).stroke("none");
+        });
+        svg.circle(thisone.r*2).cx(thisone.centroid[0]).cy(thisone.centroid[1]).fill(color).stroke("none");});
     
-   window.addEventListener("load", (event) => {
-  onLoad();
-});
+}
 
 
-
-document.querySelector("input#main-color").addEventListener('click', e => {
     Coloris({
         onChange: (color, inputEl) => {
+            colors = ["rgba(" + RGBvalues.color(color).r /3+"," + RGBvalues.color(color).g /3+ "," + RGBvalues.color(color).b /3+")",
+                 "rgba(" + RGBvalues.color(color).r /2+ "," + RGBvalues.color(color).g/2 + "," + RGBvalues.color(color).b  /2+")",
+                 "rgba(" + RGBvalues.color(color).r /1.5+ "," + RGBvalues.color(color).g /1.5+ "," + RGBvalues.color(color).b /1.5+ ")",
+                  "rgba(" + RGBvalues.color(color).r + "," + RGBvalues.color(color).g + "," + RGBvalues.color(color).b + ")"];
+            svg.clear();
+            trace();
+        }
+    });
+
+
+    /*
             let newColor = RGBvalues.color(color);
             function colorGetHue() {
                 let darkest = Math.min(newColor.r, newColor.g, newColor.b);
@@ -359,10 +346,4 @@ document.querySelector("input#main-color").addEventListener('click', e => {
             }
             colorGetScheme();
             colorGetScheme();
-            colorGetScheme();
-            newColors.push("rgba(" + color.r + "," + color.g + "," + color.b + ")");
-            colors = newColors;
-            svg.stroke({ width: 5, color: colors[0] }).fill(colors[0])
-        }
-    });
-});
+            colorGetScheme();*/
